@@ -39,13 +39,13 @@ public class TwitterHandler {
             return message.getText();
     }
 
-    public static List<String> searchtweets() throws TwitterException {
-            Twitter twitter = getTwitterinstance();
-            Query query = new Query("source:twitter4j loco");
-            QueryResult result = twitter.search(query);
-            List<Status> statuses = result.getTweets();
-            return statuses.stream().map(
-                            item -> item.getText()).collect(
-                                            Collectors.toList());
+    public static List<String> searchTweets(String search) throws TwitterException {
+        Twitter twitter = getTwitterinstance();
+        Query query = new Query(search);
+        QueryResult result = twitter.search(query);
+
+        return result.getTweets().stream()
+          .map(item -> item.getText())
+          .collect(Collectors.toList());
     }
 }
