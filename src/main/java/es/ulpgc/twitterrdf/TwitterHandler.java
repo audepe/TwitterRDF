@@ -10,7 +10,10 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-
+/**
+ *
+ * @author dadepe
+ */
 public class TwitterHandler {
 
 
@@ -39,13 +42,11 @@ public class TwitterHandler {
             return message.getText();
     }
 
-    public static List<String> searchTweets(String search) throws TwitterException {
+    public static List<Status> searchTweets(String search) throws TwitterException {
         Twitter twitter = getTwitterinstance();
         Query query = new Query(search);
         QueryResult result = twitter.search(query);
 
-        return result.getTweets().stream()
-          .map(item -> item.getText())
-          .collect(Collectors.toList());
+        return result.getTweets();
     }
 }
