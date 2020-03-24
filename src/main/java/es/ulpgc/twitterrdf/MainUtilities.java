@@ -13,9 +13,7 @@ import org.apache.jena.riot.RDFFormat;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
-public class Main {
-    public static void main (String args[]) {
-    }
+public class MainUtilities {
     
     public static List<Status> getTweets(String search_term, int n_tweets){
         
@@ -23,7 +21,7 @@ public class Main {
             return searchTweets(search_term, n_tweets);
             
         } catch (TwitterException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainUtilities.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

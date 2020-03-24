@@ -5,9 +5,9 @@
  */
 package es.ulpgc.twitterrdf;
 
-import static es.ulpgc.twitterrdf.Main.getFormattedTweets;
-import static es.ulpgc.twitterrdf.Main.getTweets;
-import static es.ulpgc.twitterrdf.Main.writeToFile;
+import static es.ulpgc.twitterrdf.MainUtilities.getFormattedTweets;
+import static es.ulpgc.twitterrdf.MainUtilities.getTweets;
+import static es.ulpgc.twitterrdf.MainUtilities.writeToFile;
 import java.io.File;
 import java.util.List;
 import javax.swing.JOptionPane;
