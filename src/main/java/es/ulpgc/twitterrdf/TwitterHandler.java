@@ -49,27 +49,4 @@ public class TwitterHandler {
         }
         return res;
     }
-    
-        public static Status getTweet(long tweetId){
-        Twitter twitter = getTwitterinstance();
-        try{
-            return twitter.showStatus(tweetId);
-        }catch(TwitterException e){
-            System.out.println("Tweet " + tweetId + " not found");
-        }
-        
-        return null;
-    }
-    
-    public static boolean isTweet(long tweetId){
-        Twitter twitter = getTwitterinstance();
-        try{
-            twitter.showStatus(tweetId);
-        }catch(TwitterException e){
-            System.out.println("Tweet " + tweetId + " not found");
-            return false;
-        }
-        
-        return true;
-    }
 }
