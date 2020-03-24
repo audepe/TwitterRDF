@@ -8,15 +8,21 @@ import twitter4j.Status;
 import twitter4j.TwitterException;
 
 public class Main {
-    public static void main (String [ ] args) {
-        List<Status> results;
+    public static void main (String args[]) {
+    }
+    
+    public static String getFormattedTweets(String search_term, int n_tweets){
+        String res = "";
         try {
-            results = searchTweets("Animal Crossing");
+            List<Status> results;
+            results = searchTweets(search_term, n_tweets);
             for (Status status : results) {
-                System.out.println("@" + status.getUser().getScreenName() + ":" + status.getText());
+                res += "@" + status.getUser().getScreenName() + ":" + status.getText() + "\n";
+                res += "*****************\n";
             }
         } catch (TwitterException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return res;
     }
 }
