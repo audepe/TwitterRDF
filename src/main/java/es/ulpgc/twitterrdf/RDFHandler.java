@@ -1,4 +1,5 @@
 package es.ulpgc.twitterrdf;
+
 import static es.ulpgc.twitterrdf.TwitterHandler.showStatus;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -18,18 +19,19 @@ import twitter4j.User;
  *
  * @author dadepe
  */
-public class RDFHandler {    
+public class RDFHandler {
+
     String tweetURI = "http://www.twitterRDF.fake/tweetnamespace/";
     String userURI = "http://www.twitterRDF.fake/usernamespace/";
     String langURI = "http://www.twitterRDF.fake/langnamespace/";
     String replyURI = "http://www.twitterRDF.fake/replynamespace/";
     String subjectURI = "http://www.twitterRDF.fake/subjectnamespace/";
     String termURI = "http://www.twitterRDF.fake/termnamespace/";
-    
+
     String subject;
     String term;
-    
-    List<Status>tweets;
+
+    List<Status> tweets;
     String date;
     String txt;
     String user_loc;
@@ -40,27 +42,28 @@ public class RDFHandler {
     long uid;
     long inRepTo;
     Model model;
-    
+
     Property p_text;
     Property p_tw_id;
     Property p_date;
-    
+
     Property p_author;
     Property p_author_name;
     Property p_author_loc;
-    
+
     Property p_lang;
     Property p_lang_id;
     Property p_lang_label;
-        
+
     Property p_rep_to;
     Property p_rel_to;
     Property p_lab;
-    
-    
-    public RDFHandler(List<Status> tweets, String subject, String term){
+
+    public RDFHandler(List<Status> tweets, String subject, String term) {
         this.tweets = tweets;
         this.model = ModelFactory.createDefaultModel();
+        this.subject = subject;
+        this.term = term;
         
         p_text = model.createProperty(tweetURI, "text");
         p_tw_id = model.createProperty(tweetURI, "tweet_id");
@@ -72,70 +75,63 @@ public class RDFHandler {
         p_lang_id = model.createProperty(langURI, "language_id");
         p_lang_label = model.createProperty(langURI, "language_label");
         p_rep_to = model.createProperty(replyURI, "replay");
-        p_rel_to = model.createProperty(subjectURI,"theme");
-        p_lab = model.createProperty(termURI,"label");
-        
-        this.subject = subject;
-        this.term = term;
+        p_rel_to = model.createProperty(subjectURI, "theme");
+        p_lab = model.createProperty(termURI, "label");        
     }
-    private void  giveRdfFieldsOfTweet(Status tweet){
+
+    private void getPropertiesFromTweet(Status tweet) {
         date = formatDate(tweet.getCreatedAt());
-        
-        id_tweet =tweet.getId();
-        
+        id_tweet = tweet.getId();
         txt = tweet.getText();
-        
         user_loc = giveUserLocalitation(tweet);
         user_name = giveUserName(tweet);
         uid = giveUserId(tweet);
-        
         id_lang = giveLangId(tweet);
         lang_label = giveLangLabel(tweet);
-        
         inRepTo = tweet.getInReplyToStatusId();
-        
-    
     }
-    
-    public void generateTweetResources(){
-        for(Status s : tweets){
-                generateTweetResource(s, true);
-            }
+
+    public void generateTweetResources() {
+        for (Status s : tweets) {
+            generateTweetResource(s, true);
+        }
     }
-    
-    private Resource generateTweetResource(Status status, boolean justOnce){
-        if(status == null)return null;
-        giveRdfFieldsOfTweet(status);
-        
-        Resource tweet = model.createResource(tweetURI+id_tweet);
+
+    private Resource generateTweetResource(Status status, boolean justOnce) {
+        if (status == null) {
+            return null;
+        }
+        getPropertiesFromTweet(status);
+
+        Resource tweet = model.createResource(tweetURI + id_tweet);
         tweet.addProperty(p_date, date);
-        tweet.addProperty(p_tw_id, id_tweet+"");
-        tweet.addProperty(p_text,txt);
-        
+        tweet.addProperty(p_tw_id, id_tweet + "");
+        tweet.addProperty(p_text, txt);
+
         Resource user = createUserResource();
         tweet.addProperty(p_author, user);
-        
+
         Resource language = createLangResource();
         tweet.addProperty(p_lang, language);
-        
-        if(inRepTo != -1 && justOnce){
+
+        if (inRepTo != -1 && justOnce) {
             Status statusInReplayTo = showStatus(inRepTo);
-            if(statusInReplayTo != null){
-                tweet.addProperty(p_rep_to,generateTweetResource(statusInReplayTo,false));
+            if (statusInReplayTo != null) {
+                tweet.addProperty(p_rep_to, generateTweetResource(statusInReplayTo, false));
             }
         }
-        Resource termResource = createTermResource(subject,term);
+        Resource termResource = createTermResource(subject, term);
         tweet.addProperty(p_rel_to, termResource);
-        
+
         return tweet;
     }
-    
-    private String formatDate(Date date){
+
+    private String formatDate(Date date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return date.toInstant()
-                   .atZone(ZoneId.systemDefault())
-                   .toLocalDate()
-                   .format(formatter);
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .format(formatter);
 
     }
 
@@ -163,15 +159,15 @@ public class RDFHandler {
     }
 
     private Resource createUserResource() {
-        Resource user = model.createResource(userURI+uid);
+        Resource user = model.createResource(userURI + uid);
         user.addProperty(p_author_name, user_name);
         user.addProperty(p_author_loc, user_loc);
         return user;
     }
 
     private Resource createLangResource() {
-        Resource lang = model.createResource(langURI+ id_lang);
-        lang.addProperty(p_lang_id,id_lang);
+        Resource lang = model.createResource(langURI + id_lang);
+        lang.addProperty(p_lang_id, id_lang);
         lang.addProperty(p_lang_label, lang_label);
         return lang;
     }
@@ -181,18 +177,18 @@ public class RDFHandler {
         return user.getId();
     }
 
-    private Resource createTermResource(String theme,String term) {
-        Resource themeResource = model.createResource(subjectURI+theme);
+    private Resource createTermResource(String theme, String term) {
+        Resource themeResource = model.createResource(subjectURI + theme);
         themeResource.addProperty(RDF.type, RDFS.Class);
         themeResource.addProperty(RDFS.label, theme);
-        Resource termResource = model.createResource(termURI+term);
+        Resource termResource = model.createResource(termURI + term);
         termResource.addProperty(RDF.type, themeResource);
         termResource.addProperty(p_lab, term);
         return termResource;
-        
+
     }
-    
-    public Model getModel(){
+
+    public Model getModel() {
         return model;
     }
 }

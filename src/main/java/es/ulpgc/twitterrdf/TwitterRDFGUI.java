@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.ulpgc.twitterrdf;
 
 import static es.ulpgc.twitterrdf.MainUtilities.getFormattedTweets;
@@ -22,11 +17,12 @@ public class TwitterRDFGUI extends javax.swing.JFrame {
     /**
      * Creates new form TwitterRDFGUI
      */
-    File fileToWrite;
+    File fileToWrite = null;
     RDFHandler rdfHandler;
     List<Status> tweets = null;
     String subject = "";
     String term = "";
+
     public TwitterRDFGUI() {
         initComponents();
     }
@@ -55,7 +51,6 @@ public class TwitterRDFGUI extends javax.swing.JFrame {
         save_button = new javax.swing.JButton();
         fromatLabel = new javax.swing.JLabel();
         fileChooserButton = new javax.swing.JButton();
-        rutaLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         subjectLabel = new javax.swing.JLabel();
         subjectTF = new javax.swing.JTextField();
@@ -125,10 +120,8 @@ public class TwitterRDFGUI extends javax.swing.JFrame {
             }
         });
 
-        rutaLabel.setText("No se ha seleccionado");
-
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
-        jLabel1.setText("Ruta");
+        jLabel1.setText("Ruta de guardado");
 
         subjectLabel.setText("Tema de Búsqueda");
 
@@ -145,7 +138,7 @@ public class TwitterRDFGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(143, 143, 143)
                 .addComponent(logo)
-                .addContainerGap(191, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -165,35 +158,20 @@ public class TwitterRDFGUI extends javax.swing.JFrame {
                                     .addComponent(ntweetspinner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(33, 33, 33)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(busq_label))
+                                    .addComponent(busq_label)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(38, 38, 38)
                                         .addComponent(searchButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                         .addGap(38, 38, 38)))
                 .addGap(18, 58, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(fromatLabel)
-                            .addGap(142, 142, 142))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(fileChooserButton)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(turtlebutton)
-                                    .addComponent(xml_rdfbutton)))
-                            .addGap(70, 70, 70))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(rutaLabel)
-                            .addContainerGap()))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(save_button)
-                        .addGap(86, 86, 86))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addContainerGap())))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(fromatLabel)
+                    .addComponent(save_button, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(xml_rdfbutton)
+                    .addComponent(turtlebutton)
+                    .addComponent(fileChooserButton))
+                .addGap(75, 75, 75))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,38 +183,30 @@ public class TwitterRDFGUI extends javax.swing.JFrame {
                     .addComponent(busq_label)
                     .addComponent(subjectLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rutaLabel))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(search_term_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(subjectTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(nTweetsLabel)
-                        .addGap(7, 7, 7)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ntweetspinner))
-                        .addGap(2, 2, 2)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(search_term_field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(subjectTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(1, 1, 1)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nTweetsLabel)
+                    .addComponent(fileChooserButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ntweetspinner)
+                    .addComponent(fromatLabel))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(fileChooserButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fromatLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(xml_rdfbutton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(turtlebutton)
-                        .addGap(18, 18, 18)
-                        .addComponent(save_button)
-                        .addGap(59, 59, 59))))
+                        .addGap(16, 16, 16)
+                        .addComponent(save_button, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -254,13 +224,13 @@ public class TwitterRDFGUI extends javax.swing.JFrame {
         String search_term = search_term_field.getText();
         try {
             ntweetspinner.commitEdit();
-        } catch ( java.text.ParseException e ) {
+        } catch (java.text.ParseException e) {
             JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
         }
         int n_tweets = (Integer) ntweetspinner.getValue();
-        
+
         tweets = getTweets(search_term, n_tweets);
-        
+
         show_tweets_TP.setText(getFormattedTweets(tweets));
         term = search_term;
         subject = subjectTF.getText();
@@ -272,27 +242,26 @@ public class TwitterRDFGUI extends javax.swing.JFrame {
 
     private void save_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_buttonActionPerformed
         String format = "";
-        if(tweets == null){
+        if (tweets == null) {
             JOptionPane.showMessageDialog(this, "Debes realizar una busqueda primero.");
-        } else {            
-            String path = rutaLabel.getText();
-            if ("No se ha seleccionado".equals(path)){
+        } else {
+            if (fileToWrite == null) {
                 JOptionPane.showMessageDialog(this, "Selecciona donde guardar el resultado.");
             } else {
                 rdfHandler = new RDFHandler(tweets, subject, term);
                 rdfHandler.generateTweetResources();
-                if (xml_rdfbutton.isSelected()){
+                if (xml_rdfbutton.isSelected()) {
                     format = "XML/RDF";
-                } else if(turtlebutton.isSelected()){
+                } else if (turtlebutton.isSelected()) {
                     format = "Turtle";
                 }
                 boolean doneWrite = writeToFile(fileToWrite, rdfHandler.getModel(), format);
-                if(doneWrite){
+                if (doneWrite) {
                     JOptionPane.showMessageDialog(this, "Se ha guardado correctamente.");
                 } else {
                     JOptionPane.showMessageDialog(this, "Ha habido un error al guardar el archivo.");
                 }
-            }      
+            }
         }
     }//GEN-LAST:event_save_buttonActionPerformed
 
@@ -300,7 +269,6 @@ public class TwitterRDFGUI extends javax.swing.JFrame {
         path_chooser.showSaveDialog(null);
         fileToWrite = path_chooser.getSelectedFile();
         String path = fileToWrite.getAbsolutePath();
-        rutaLabel.setText(path);
     }//GEN-LAST:event_fileChooserButtonActionPerformed
 
     private void subjectTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subjectTFActionPerformed
@@ -353,7 +321,6 @@ public class TwitterRDFGUI extends javax.swing.JFrame {
     private javax.swing.JSpinner ntweetspinner;
     private javax.swing.ButtonGroup output_selector;
     private javax.swing.JFileChooser path_chooser;
-    private javax.swing.JLabel rutaLabel;
     private javax.swing.JButton save_button;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField search_term_field;
