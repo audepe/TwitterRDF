@@ -55,7 +55,7 @@ public class TwitterHandler {
         try{
             return twitter.showStatus(tweetId);
         }catch(TwitterException e){
-            System.out.println("Tweet " + tweetId + " no encontrado");
+            System.out.println("Tweet " + tweetId + " not found");
         }
         
         return null;
@@ -66,7 +66,7 @@ public class TwitterHandler {
         try{
             twitter.showStatus(tweetId);
         }catch(TwitterException e){
-            System.out.println("Tweet " + tweetId + " no encontrado");
+            System.out.println("Tweet " + tweetId + " not found");
             return false;
         }
         
